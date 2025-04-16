@@ -10,47 +10,57 @@ Kod bazowy programu Commit4_0:
 import java.io.IOException;
 import java.util.Scanner;
 
-
 class Main {
   public static void main(String[] args) {
     try {
-      
-        Service s = new Service();
-        Scanner scanner = new Scanner(System.in);
-      
-     boolean tak = true;
+      Service s = new Service();
+      Scanner scanner = new Scanner(System.in);
+
+      boolean tak = true;
       while(tak){
-        System.out.println("Wybierz opcję:");
+        System.out.println("\nWybierz opcję:");
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
         System.out.print("Twój wybór: ");
-        String choice = scanner.nextLine();
+        int choice = scanner.nextLine();
 
         switch (choice) {
-          case "1":
+          case 1:
+            // Dodawanie studenta
             System.out.print("Podaj imię studenta: ");
             String name = scanner.nextLine();
 
-            System.out.print("Podaj wiek studenta: ");
-            int age = Integer.parseInt(scanner.nextLine());
+            System.out.print("Podaj nazwisko studenta: ");
+            String lastname = scanner.nextLine();
 
-            s.addStudent(new Student(name, age));
-            System.out.println("Dodano studenta.");
-            break;
-
-          case "2":
-            var students = s.getStudents();
-            for (Student current : students) {
-              System.out.println(current.ToString());
+            int age = 0;
+            boolean validAge = false;
+            while (!validAge) {
+              System.out.print("Podaj wiek studenta: ");
+              try {
+                age = Integer.parseInt(scanner.nextLine());
+                validAge = true;
+              } catch (NumberFormatException e) {
+                System.out.println("Wiek musi być liczbą. Spróbuj ponownie.");
+              }
             }
+
+            // Dodanie studenta
+            s.addStudent(new Student(name, lastname, age));
+            System.out.println("✅ Dodano studenta.");
             break;
 
-          default:
-            System.out.println("Nieznana opcja.");
+          case 2:
+            // Wyświetlanie wszystkich studentów
+            var students = s.getStudents();
+            System.out.println("📋 Lista studentów:");
+            for (Student current : students) {
+              System.out.println(current.toString()); // Wyświetlanie danych studenta
+            }
             break;
         }
       }
-        scanner.close();
+      scanner.close();
 
 
     } catch (IOException e) {
