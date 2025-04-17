@@ -24,7 +24,7 @@ public class Service {
       line = reader.readLine();
       if(line == null)
         break;
-      ret.add(Student.Parse(line));
+      ret.add(Student.parse(line));
     }
     reader.close();
     return ret;

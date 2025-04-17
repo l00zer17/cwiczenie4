@@ -22,7 +22,7 @@ class Main {
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
         System.out.print("Twój wybór: ");
-        int choice = scanner.nextLine();
+        int choice = Integer.parseInt(scanner.nextLine());
 
         switch (choice) {
           case 1:

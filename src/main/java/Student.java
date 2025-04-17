@@ -1,7 +1,7 @@
-public class Student {
 
-  private String Name;
-  private int Age;
+public class Student {
+  private String name;
+  private int age;
   private String lastName;
   
   public Student(String name, String lastName, int age){
@@ -10,15 +10,15 @@ public class Student {
     this.lastName = lastName;
   }
 
-  public String GetName() {return Name;}
-  public String GetLastName() {return lastName;}
-  public int GetAge() {return Age;}
+  public String getName() {return name;}
+  public String getLastName() {return lastName;}
+  public int getAge() {return age;}
 
-  public String ToString() {
-    return Name + " " + lastName  + " " + Integer.toString(Age);
+  public String toString() {
+    return name + " " + lastName + " " + Integer.toString(age);
   }
 
-public static Student parse(String str) {
+  public static Student parse(String str) {
     String[] data = str.split(" ");
     if (data.length != 3) {
       return new Student("Parse Error", "Parse Error", -1);
