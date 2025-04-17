@@ -26,7 +26,6 @@ class Main {
 
         switch (choice) {
           case 1:
-            // Dodawanie studenta
             System.out.print("Podaj imię studenta: ");
             String name = scanner.nextLine();
 
@@ -45,17 +44,15 @@ class Main {
               }
             }
 
-            // Dodanie studenta
             s.addStudent(new Student(name, lastname, age));
-            System.out.println("✅ Dodano studenta.");
+            System.out.println(" Dodano studenta.");
             break;
 
           case 2:
-            // Wyświetlanie wszystkich studentów
             var students = s.getStudents();
             System.out.println("📋 Lista studentów:");
             for (Student current : students) {
-              System.out.println(current.toString()); // Wyświetlanie danych studenta
+              System.out.println(current.toString());
             }
             break;
         }
