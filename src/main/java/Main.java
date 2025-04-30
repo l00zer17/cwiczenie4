@@ -10,11 +10,9 @@ class Main {
       Service s = new Service();
 
       while (true) {
-        System.out.println("\nWybierz opcję:");
-        System.out.println("1 - Dodaj studenta");
-        System.out.println("2 - Wyświetl wszystkich studentów");
-        System.out.println("3 - Wyszukaj studenta po imieniu");
-        System.out.print("Twój wybór: ");
+        
+        menu();
+       
         int choice = Integer.parseInt(scanner.nextLine());
 
         switch (choice) {
@@ -49,8 +47,20 @@ class Main {
             break;
           }
 
+          case 4: {
+            String searchName = imie();
+            String searchLastName = nazwisko();
+            boolean success = s.removeStudent(searchName, searchLastName);
+            if (success) {
+              System.out.println("Student " + searchName + " " + searchLastName + " został usunięty.");
+            } else {
+              System.out.println("Nie znaleziono studenta o imieniu: " + searchName + " i nazwisku: " + searchLastName);
+            }
+            break;
+          }
+
           default: {
-            System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
+            System.out.println("Zy wybór. Wpisz ponownie.");
             break;
           }
         }
@@ -59,6 +69,16 @@ class Main {
     } catch (IOException e) {
       System.out.println("Wystąpił błąd wejścia/wyjścia: " + e.getMessage());
     }
+  }
+
+  public static void menu()
+  {
+    System.out.println("\nWybierz opcję:");
+    System.out.println("1 - Dodaj studenta");
+    System.out.println("2 - Wyświetl wszystkich studentów");
+    System.out.println("3 - Wyszukaj studenta po imieniu");
+    System.out.println("4 - Usuń studenta po imieniu i nazwisku");
+    System.out.print("Co chcesz zrobic?: ");
   }
 
   public static String imie() {

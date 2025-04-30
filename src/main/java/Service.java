@@ -1,4 +1,3 @@
-import java.util.Collection;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,7 +14,7 @@ public class Service {
     }
   }
 
-  public Collection<Student> getStudents() throws IOException {
+  public ArrayList<Student> getStudents() throws IOException {
     var students = new ArrayList<Student>();
     try (BufferedReader reader = new BufferedReader(new FileReader("db.txt"))) {
       String line;
@@ -29,9 +28,31 @@ public class Service {
   public Student findStudentByName(String name) throws IOException {
     for (Student s : getStudents()) {
       if (s.getName().equalsIgnoreCase(name)) {
-        return s; 
+        return s;
       }
     }
-    return null; 
+    return null;
+  }
+
+  public boolean removeStudent(String name, String lastName) throws IOException {
+    ArrayList<Student> students = getStudents();
+    boolean found = false;
+    for (Student student : students) {
+      if (student.getName().equalsIgnoreCase(name) && student.getLastName().equalsIgnoreCase(lastName)) {
+        students.remove(student);
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter("db.txt"))) {
+        for (Student student : students) {
+          writer.write(student.toString());
+          writer.newLine();
+        }
+      }
+    }
+    return found;
   }
 }
