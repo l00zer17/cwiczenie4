@@ -1,23 +1,16 @@
-/*
-Kod bazowy programu Commit4_0: 
-• Program dodaje do prostej bazy danych (pliku db.txt) dane odnośnie Studentów.
-• Studenci dodawani są w klasie Main.
-• Wszyscy studenci są wypisywani na końcu klasy Main.
-• Klasa Service obsługuje odczyt i zapis do pliku bazy danych.
-• Klasa Student reprezentuje pojedynczego studenta (Imię, Wiek).
-*/
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class Main {
+  static Scanner scanner = new Scanner(System.in);
+
   public static void main(String[] args) {
     try {
       Service s = new Service();
-      Scanner scanner = new Scanner(System.in);
 
-      boolean tak = true;
-      while(tak){
+      while (true) {
         System.out.println("\nWybierz opcję:");
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
@@ -26,42 +19,81 @@ class Main {
 
         switch (choice) {
           case 1:
-            System.out.print("Podaj imię studenta: ");
-            String name = scanner.nextLine();
+            String name = imie();
+            String lastname = nazwisko();
+            int age = wiek();
+            String urodzenie = dataUrodzenia();
 
-            System.out.print("Podaj nazwisko studenta: ");
-            String lastname = scanner.nextLine();
-
-            int age = 0;
-            boolean validAge = false;
-            while (!validAge) {
-              System.out.print("Podaj wiek studenta: ");
-              try {
-                age = Integer.parseInt(scanner.nextLine());
-                validAge = true;
-              } catch (NumberFormatException e) {
-                System.out.println("Wiek musi być liczbą. Spróbuj ponownie.");
-              }
-            }
-
-            s.addStudent(new Student(name, lastname, age));
-            System.out.println(" Dodano studenta.");
+            s.addStudent(new Student(name, lastname, age, urodzenie));
+            System.out.println("Dodano studenta.");
             break;
 
           case 2:
             var students = s.getStudents();
-            System.out.println("📋 Lista studentów:");
+            System.out.println("Lista studentów:");
             for (Student current : students) {
               System.out.println(current.toString());
             }
             break;
+
+          default:
+            System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
         }
       }
-      scanner.close();
-
 
     } catch (IOException e) {
+      System.out.println("Wystąpił błąd wejścia/wyjścia: " + e.getMessage());
+    }
+  }
 
+  public static String imie() {
+    System.out.print("Podaj imię studenta: ");
+    return scanner.nextLine();
+  }
+
+  public static String nazwisko() {
+    System.out.print("Podaj nazwisko studenta: ");
+    return scanner.nextLine();
+  }
+
+  public static int wiek() {
+    int age = 0;
+    boolean validAge = false;
+    while (!validAge) {
+      System.out.print("Podaj wiek studenta: ");
+      try {
+        age = Integer.parseInt(scanner.nextLine());
+        validAge = true;
+      } catch (NumberFormatException e) {
+        System.out.println("Wiek musi być liczbą. Spróbuj ponownie.");
+      }
+    }
+    return age;
+  }
+
+  public static String dataUrodzenia() {
+    while (true) {
+      System.out.print("Podaj datę urodzenia w formacie (dd-mm-rrrr): ");
+      String date = scanner.nextLine();
+
+      try {
+        String[] parts = date.split("-");
+        if (parts.length != 3) throw new Exception("Nieprawidłowy format daty.");
+
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[2]);
+
+        if (day < 1 || day > 31) throw new Exception("Dzień musi być między 1 a 31.");
+        if (month < 1 || month > 12) throw new Exception("Miesiąc musi być między 1 a 12.");
+        if (year < 1900) throw new Exception("Rok nie może być mniejszy niż 1900.");
+
+        return date;
+
+      } catch (Exception e) {
+        System.out.println("Błąd: " + e.getMessage());
+        System.out.println("Spróbuj ponownie.");
+      }
     }
   }
 }
