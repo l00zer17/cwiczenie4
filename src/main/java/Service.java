@@ -5,32 +5,33 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 public class Service {
 
   public void addStudent(Student student) throws IOException {
-    var f = new FileWriter("db.txt", true);
-    var b = new BufferedWriter(f);
-    b.append(student.toString());
-    b.newLine();
-    b.close();
+    try (BufferedWriter b = new BufferedWriter(new FileWriter("db.txt", true))) {
+      b.write(student.toString());
+      b.newLine();
+    }
   }
 
   public Collection<Student> getStudents() throws IOException {
-    var ret = new ArrayList<Student>();
-    var f = new FileReader("db.txt");
-    var reader = new BufferedReader(f);
-    String line = "";
-    while (true) {
-      line = reader.readLine();
-      if(line == null)
-        break;
-      ret.add(Student.parse(line));
+    var students = new ArrayList<Student>();
+    try (BufferedReader reader = new BufferedReader(new FileReader("db.txt"))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        students.add(Student.parse(line));
+      }
     }
-    reader.close();
-    return ret;
+    return students;
   }
 
-  public Student findStudentByName(String name) {
-    return null;
+  public Student findStudentByName(String name) throws IOException {
+    for (Student s : getStudents()) {
+      if (s.getName().equalsIgnoreCase(name)) {
+        return s; 
+      }
+    }
+    return null; 
   }
 }

@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 class Main {
@@ -14,30 +13,46 @@ class Main {
         System.out.println("\nWybierz opcję:");
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
+        System.out.println("3 - Wyszukaj studenta po imieniu");
         System.out.print("Twój wybór: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
         switch (choice) {
-          case 1:
+          case 1: {
             String name = imie();
             String lastname = nazwisko();
             int age = wiek();
             String urodzenie = dataUrodzenia();
-
             s.addStudent(new Student(name, lastname, age, urodzenie));
             System.out.println("Dodano studenta.");
             break;
+          }
 
-          case 2:
+          case 2: {
             var students = s.getStudents();
             System.out.println("Lista studentów:");
             for (Student current : students) {
-              System.out.println(current.toString());
+              System.out.println(current);
             }
             break;
+          }
 
-          default:
+          case 3: {
+            String searchName = imie();
+            Student foundStudent = s.findStudentByName(searchName);
+            if (foundStudent != null) {
+              System.out.println("Znaleziony student:");
+              System.out.println("- " + foundStudent);
+            } else {
+              System.out.println("Nie znaleziono studenta o imieniu: " + searchName);
+            }
+            break;
+          }
+
+          default: {
             System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
+            break;
+          }
         }
       }
 
